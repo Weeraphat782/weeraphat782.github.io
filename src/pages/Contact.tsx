@@ -1,7 +1,10 @@
 import { featuredProject, linkedinProfile, site } from '../content';
 import { Link } from '../router';
+import { usePageMeta } from '../usePageMeta';
 
 export function ContactPage() {
+  usePageMeta(`Contact · ${site.name}`, `Forward Deployed and applied AI conversations — ${site.location}.`);
+
   return (
     <div className="container page balance-page">
       <header className="page-header">

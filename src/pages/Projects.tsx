@@ -1,7 +1,10 @@
-import { featuredProject, linkedinProfile } from '../content';
+import { featuredProject, linkedinProfile, site } from '../content';
 import { Link } from '../router';
+import { usePageMeta } from '../usePageMeta';
 
 export function ProjectsPage() {
+  usePageMeta(`Projects · ${site.name}`, featuredProject.tagline);
+
   return (
     <div className="container page">
       <header className="page-header">

@@ -1,4 +1,5 @@
-import { aboutCopy } from '../content';
+import { aboutCopy, site } from '../content';
+import { usePageMeta } from '../usePageMeta';
 
 const blocks = [
   { label: 'Target direction', body: aboutCopy.positioning },
@@ -17,6 +18,8 @@ const blocks = [
 ] as const;
 
 export function AboutPage() {
+  usePageMeta(`About · ${site.name}`, aboutCopy.intro);
+
   return (
     <div className="container page editorial-page">
       <header className="page-header">

@@ -191,6 +191,7 @@ button:focus-visible {
 
 .portrait {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: center 34%;
@@ -301,7 +302,7 @@ h3 {
 }
 
 .section {
-  padding: clamp(3rem, 6vw, 4.5rem) 0;
+  padding: clamp(2rem, 4vw, 3.15rem) 0;
 }
 
 .section-header {
@@ -331,27 +332,12 @@ h3 {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 560;
-}
-
-.issue-bar {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0.65rem 0;
-  margin-top: 0.5rem;
-}
-
-.issue-bar p {
-  margin: 0;
-  font-size: var(--text-caption);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
+  color: var(--primary);
 }
 
 .featured-split {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(200px, 340px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1.15fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
   align-items: start;
   padding-top: 1.25rem;
@@ -368,9 +354,14 @@ h3 {
 
 .featured-shot {
   display: block;
-  border-top: 1px solid var(--border);
-  padding-top: 0.75rem;
   text-decoration: none;
+}
+
+@media (max-width: 800px) {
+  .featured-shot {
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+  }
 }
 
 .featured-shot img {
@@ -383,6 +374,123 @@ h3 {
 
 .featured-shot:hover img {
   border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+
+.stack-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 0 0 0.65rem;
+  padding: 0;
+}
+
+.stack-chips li {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text);
+}
+
+.proof-line {
+  margin: 0 0 1rem;
+  font-size: var(--text-caption);
+}
+
+.arch-figure-compact {
+  margin: 1.25rem 0;
+}
+
+.arch-figure-compact .arch-svg {
+  max-height: 200px;
+}
+
+.arch-caption-compact {
+  font-size: var(--text-caption);
+}
+
+.case-teaser-shot {
+  display: block;
+  margin: 1.25rem 0;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-elevated);
+}
+
+.case-teaser-shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.case-teaser-shot span {
+  display: block;
+  padding: 0.65rem 1rem;
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.tool-contract {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--primary);
+  background: var(--bg-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.tool-contract-label {
+  margin: 0 0 0.35rem;
+  font-size: var(--text-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+}
+
+.tool-contract code {
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.component-details {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.component-details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.component-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.component-details summary h3 {
+  display: inline;
+  margin: 0;
+}
+
+.component-details[open] summary h3::after {
+  content: '';
+}
+
+@media (min-width: 641px) {
+  .component-details summary {
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .principle-list {
@@ -1180,8 +1288,22 @@ code {
     scroll-margin-top: 1.25rem;
   }
 
-  .brand-meta a {
+  .brand-meta-contact {
+    display: none;
+  }
+
+  .section-header-link,
+  .text-link,
+  .home-contact-lead a,
+  .home-contact .muted a {
     display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.15rem 0;
+  }
+
+  .component-details summary {
+    display: flex;
     align-items: center;
     min-height: 44px;
   }

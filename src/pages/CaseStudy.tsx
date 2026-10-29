@@ -3,12 +3,14 @@ import { ArchitectureDiagram } from '../components/ArchitectureDiagram';
 import { ProseText } from '../components/ProseText';
 import { SystemScreensGallery } from '../components/SystemScreensGallery';
 import {
+  caseStudyProof,
   caseStudyScreenshots,
   caseStudySections,
   featuredProject,
   site,
 } from '../content';
 import { Link } from '../router';
+import { usePageMeta } from '../usePageMeta';
 
 function firstSentence(text: string): string {
   const line = text.trim().split('\n').find((l) => l.trim()) ?? text;
@@ -35,14 +37,27 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
     id: 'components',
     title: 'Key Technical Components',
     body: (
-      <ul className="component-list">
-        {caseStudySections.keyComponents.map((c) => (
-          <li key={c.title}>
-            <h3>{c.title}</h3>
-            <p>{c.body}</p>
-          </li>
-        ))}
-      </ul>
+      <>
+        <aside className="tool-contract" aria-label="Example MCP tool contract">
+          <p className="tool-contract-label">Example MCP tool</p>
+          <code>
+            {caseStudyProof.mcpToolExample.name}({caseStudyProof.mcpToolExample.input}) →{' '}
+            {caseStudyProof.mcpToolExample.output}
+          </code>
+        </aside>
+        <ul className="component-list">
+          {caseStudySections.keyComponents.map((c) => (
+            <li key={c.title}>
+              <details className="component-details">
+                <summary>
+                  <h3>{c.title}</h3>
+                </summary>
+                <p>{c.body}</p>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </>
     ),
   },
   { id: 'human', title: 'Human-in-the-Loop Design', body: <ProseText text={caseStudySections.humanInLoop} /> },
@@ -54,14 +69,32 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
 ];
 
 const showSystemScreens = caseStudyScreenshots.length > 0;
+const teaserShot = caseStudyScreenshots[0];
 
 export function CaseStudyPage() {
   const tocDetailsRef = useRef<HTMLDetailsElement>(null);
+
+  usePageMeta(
+    `${featuredProject.name} · ${site.name}`,
+    featuredProject.tagline,
+  );
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 960px)');
     const sync = () => {
       if (tocDetailsRef.current) tocDetailsRef.current.open = mq.matches;
+    };
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 641px)');
+    const sync = () => {
+      document.querySelectorAll<HTMLDetailsElement>('.component-details').forEach((el) => {
+        el.open = mq.matches;
+      });
     };
     sync();
     mq.addEventListener('change', sync);
@@ -91,7 +124,7 @@ export function CaseStudyPage() {
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href="/projects">Projects</Link>
             <span aria-hidden="true"> / </span>
-            <span>{featuredProject.slug}</span>
+            <span>{featuredProject.name}</span>
           </nav>
           <header className="page-header">
             <p className="eyebrow">Case study</p>
@@ -120,6 +153,13 @@ export function CaseStudyPage() {
               <p>{glance.result}</p>
             </div>
           </div>
+
+          {teaserShot ? (
+            <a href="#inside-system" className="case-teaser-shot">
+              <img src={teaserShot.src} alt={teaserShot.caption} loading="lazy" />
+              <span>See the full workflow in screenshots →</span>
+            </a>
+          ) : null}
 
           <aside className="verified-callout" role="note">
             <h2>What is verified</h2>

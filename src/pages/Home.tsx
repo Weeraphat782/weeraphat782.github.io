@@ -1,5 +1,7 @@
-import { featuredProject, site } from '../content';
+import { ArchitectureDiagram } from '../components/ArchitectureDiagram';
+import { caseStudyProof, featuredProject, implementationStack, site } from '../content';
 import { Link } from '../router';
+import { usePageMeta } from '../usePageMeta';
 
 const principles = [
   {
@@ -24,17 +26,16 @@ const hireRoles = [
 ] as const;
 
 export function HomePage() {
+  usePageMeta(
+    `${site.name} · AI Implementation`,
+    site.supporting,
+  );
+
   return (
     <>
-      <div className="issue-bar container" aria-hidden="false">
-        <p>
-          {site.name} · AI Implementation · Bangkok · 2026
-        </p>
-      </div>
-
       <section className="hero-section container hero-layout">
         <div>
-          <p className="eyebrow">AI Systems · Operations · Forward Deployed</p>
+          <p className="eyebrow">AI Implementation · Operations · Forward Deployed</p>
           <h1>
             {site.headlineLead}{' '}
             <em className="headline-em">{site.headlineEmphasis}</em> {site.headlineTail}
@@ -49,20 +50,32 @@ export function HomePage() {
             </a>
           </div>
         </div>
-        <img className="portrait" src={site.portrait} alt="Weeraphat Issaraphon" width={480} height={600} />
+        <img className="portrait" src={site.portrait} alt="Weeraphat Issaraphon" />
       </section>
 
       <section className="container section">
         <div className="section-header">
           <h2>Featured project</h2>
-          <Link href="/projects">All projects</Link>
+          <Link href="/projects" className="section-header-link">
+            All projects
+          </Link>
         </div>
+        <ul className="stack-chips" aria-label="Technologies used">
+          {implementationStack.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <p className="proof-line muted">
+          {caseStudyProof.componentCount} integrated components · {caseStudyProof.webhookEvents.length} verified
+          webhook events · MCP tool surface
+        </p>
         <article className="featured-split">
           <div className="featured-copy">
             <p className="project-kicker">Case study</p>
             <h3>{featuredProject.name}</h3>
             <p>{featuredProject.tagline}</p>
             <p className="muted">{featuredProject.context}</p>
+            <ArchitectureDiagram compact />
             <Link href={`/projects/${featuredProject.slug}`} className="text-link">
               View architecture and workflow →
             </Link>
@@ -74,10 +87,8 @@ export function HomePage() {
           >
             <img
               src="/case-study/portal-04-request-quote.png"
-              alt=""
+              alt="Customer portal export quote request form"
               loading="lazy"
-              width={919}
-              height={600}
             />
           </Link>
         </article>

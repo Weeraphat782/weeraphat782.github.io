@@ -14,7 +14,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <Link href="/" className="brand">
               <span className="brand-name">{site.name}</span>
             </Link>
-            <p className="brand-meta">
+            <p className="brand-meta brand-meta-contact">
               <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
               <span>{site.location}</span>
               <a href={`mailto:${site.email}`}>{site.email}</a>

@@ -1,9 +1,9 @@
 /** Architecture flow for case study — includes owner-described trigger labels. */
-export function ArchitectureDiagram() {
-  const descId = 'arch-diagram-desc';
+export function ArchitectureDiagram({ compact = false }: { compact?: boolean }) {
+  const descId = compact ? 'arch-diagram-desc-compact' : 'arch-diagram-desc';
 
   return (
-    <figure className="arch-figure">
+    <figure className={compact ? 'arch-figure arch-figure-compact' : 'arch-figure'}>
       <div className="arch-scroll">
       <svg
         className="arch-svg"
@@ -38,20 +38,30 @@ export function ArchitectureDiagram() {
         <Arrow x1={690} y1={228} x2={710} y2={228} />
         <Arrow x1={770} y1={256} x2={695} y2={270} />
 
-        <text x={20} y={24} className="arch-legend-title">
-          Legend
-        </text>
-        <LegendItem x={20} y={230} label="Verified in cargo app code" tone="verified" />
-        <LegendItem x={20} y={252} label="Scheduled checks" tone="external" />
+        {!compact ? (
+          <>
+            <text x={20} y={24} className="arch-legend-title">
+              Legend
+            </text>
+            <LegendItem x={20} y={230} label="Verified in cargo app code" tone="verified" />
+            <LegendItem x={20} y={252} label="Scheduled checks" tone="external" />
+          </>
+        ) : null}
       </svg>
       </div>
-      <p className="arch-scroll-hint">Scroll to see the full diagram</p>
-      <figcaption id={descId}>
-        Flow: operational triggers and separately configured schedules feed assistant workflows. Assistants
-        call MCP tools against the system of record and documents. Results pass validation and human review
-        before approved customer or pricing actions. Dashed line indicates owner-described schedules not
-        verified in application source.
-      </figcaption>
+      {!compact ? <p className="arch-scroll-hint">Scroll to see the full diagram</p> : null}
+      {!compact ? (
+        <figcaption id={descId}>
+          Flow: operational triggers and separately configured schedules feed assistant workflows. Assistants
+          call MCP tools against the system of record and documents. Results pass validation and human review
+          before approved customer or pricing actions. Dashed line indicates owner-described schedules not
+          verified in application source.
+        </figcaption>
+      ) : (
+        <figcaption id={descId} className="arch-caption-compact">
+          Webhooks and schedules → assistants → MCP → system of record → human review.
+        </figcaption>
+      )}
     </figure>
   );
 }

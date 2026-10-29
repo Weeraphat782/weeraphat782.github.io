@@ -18,6 +18,26 @@ export const site = {
   headlineTail: 'Into Executable Workflows.',
 } as const;
 
+export const implementationStack = [
+  'MCP',
+  'Next.js',
+  'Supabase',
+  'Vercel',
+  'Webhooks',
+  'Cursor',
+] as const;
+
+/** Counts from the cargo case study — no invented business metrics */
+export const caseStudyProof = {
+  componentCount: 8,
+  webhookEvents: ['quotation.created', 'quotation.docs_uploaded', 'quotation.docs_replaced'] as const,
+  mcpToolExample: {
+    name: 'get_quotation',
+    input: '{ quotation_id: string }',
+    output: '{ status, documents[], customer_name, … }',
+  },
+} as const;
+
 /** Public facts from https://www.linkedin.com/in/weeraphati/ */
 export const linkedinProfile = {
   fullName: 'Weeraphat Issaraphon',
