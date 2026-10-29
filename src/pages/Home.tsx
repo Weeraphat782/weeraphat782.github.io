@@ -1,13 +1,44 @@
 import { featuredProject, site } from '../content';
 import { Link } from '../router';
 
+const principles = [
+  {
+    title: 'System of record first',
+    body: 'Agents read live quotations and documents—not stale chat context.',
+  },
+  {
+    title: 'Explicit tools',
+    body: 'MCP contracts for fetch, draft, and update—narrower blast radius than free-form browsing.',
+  },
+  {
+    title: 'Human gates',
+    body: 'Send, price, and approve stay with people; AI accelerates preparation and checks.',
+  },
+] as const;
+
+const hireRoles = [
+  'Forward Deployed Engineer',
+  'AI Solutions / Applied AI Engineer',
+  'AI Automation / Implementation Engineer',
+  'Technical product and AI systems roles close to operations',
+] as const;
+
 export function HomePage() {
   return (
     <>
+      <div className="issue-bar container" aria-hidden="false">
+        <p>
+          {site.name} · AI Implementation · Bangkok · 2026
+        </p>
+      </div>
+
       <section className="hero-section container hero-layout">
         <div>
           <p className="eyebrow">AI Systems · Operations · Forward Deployed</p>
-          <h1>{site.headline}</h1>
+          <h1>
+            {site.headlineLead}{' '}
+            <em className="headline-em">{site.headlineEmphasis}</em> {site.headlineTail}
+          </h1>
           <p className="lead">{site.supporting}</p>
           <div className="hero-actions">
             <Link href={`/projects/${featuredProject.slug}`} className="button button-primary">
@@ -18,7 +49,7 @@ export function HomePage() {
             </a>
           </div>
         </div>
-        <img className="portrait" src={site.portrait} alt="Weeraphat Issaraphon" />
+        <img className="portrait" src={site.portrait} alt="Weeraphat Issaraphon" width={480} height={600} />
       </section>
 
       <section className="container section">
@@ -26,33 +57,78 @@ export function HomePage() {
           <h2>Featured project</h2>
           <Link href="/projects">All projects</Link>
         </div>
-        <article className="project-card project-card-featured">
-          <p className="project-kicker">Case study</p>
-          <h3>{featuredProject.name}</h3>
-          <p>{featuredProject.tagline}</p>
-          <p className="muted">{featuredProject.context}</p>
-          <Link href={`/projects/${featuredProject.slug}`} className="text-link">
-            View architecture and workflow →
+        <article className="featured-split">
+          <div className="featured-copy">
+            <p className="project-kicker">Case study</p>
+            <h3>{featuredProject.name}</h3>
+            <p>{featuredProject.tagline}</p>
+            <p className="muted">{featuredProject.context}</p>
+            <Link href={`/projects/${featuredProject.slug}`} className="text-link">
+              View architecture and workflow →
+            </Link>
+          </div>
+          <Link
+            href={`/projects/${featuredProject.slug}`}
+            className="featured-shot"
+            aria-label="Open case study: request quote screen"
+          >
+            <img
+              src="/case-study/portal-04-request-quote.png"
+              alt=""
+              loading="lazy"
+              width={919}
+              height={600}
+            />
           </Link>
         </article>
       </section>
 
       <section className="container section">
-        <h2>What I optimize for</h2>
-        <ul className="card-grid">
-          <li className="info-card">
-            <h3>System of record first</h3>
-            <p>Agents read live quotations and documents—not stale chat context.</p>
-          </li>
-          <li className="info-card">
-            <h3>Explicit tools</h3>
-            <p>MCP contracts for fetch, draft, and update—narrower blast radius than free-form browsing.</p>
-          </li>
-          <li className="info-card">
-            <h3>Human gates</h3>
-            <p>Send, price, and approve stay with people; AI accelerates preparation and checks.</p>
-          </li>
+        <h2 className="section-label">How I build</h2>
+        <ol className="principle-list">
+          {principles.map((item, i) => (
+            <li key={item.title}>
+              <span className="principle-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="container section">
+        <h2 className="section-label">Work with me</h2>
+        <p className="section-intro">
+          I embed with operations teams, map workflows to a system of record, wire MCP tools and webhooks, and
+          leave human approval where decisions carry customer or compliance risk.
+        </p>
+        <ul className="role-list">
+          {hireRoles.map((role) => (
+            <li key={role}>{role}</li>
+          ))}
         </ul>
+      </section>
+
+      <section className="container section home-contact">
+        <h2 className="section-label">Contact</h2>
+        <p className="home-contact-lead">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          {' · '}
+          <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
+          {' · '}
+          {site.location}
+        </p>
+        <p className="muted">
+          For Forward Deployed or applied AI conversations,{' '}
+          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>{' '}
+          works too.
+        </p>
       </section>
     </>
   );

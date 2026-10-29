@@ -11,7 +11,11 @@ export const site = {
   supporting:
     'I design and implement AI-powered operational systems that connect business processes, internal data, documents, and automation—with human oversight at critical decision points.',
   cargoPublicUrl: 'https://cargo.omgexp.com',
-  portrait: '/case-study/S__17186943.jpg',
+  portrait: '/case-study/portrait-headshot.jpg',
+  siteUrl: 'https://weeraphat782.github.io',
+  headlineLead: 'Building AI Systems That Turn',
+  headlineEmphasis: 'Complex Operations',
+  headlineTail: 'Into Executable Workflows.',
 } as const;
 
 /** Public facts from https://www.linkedin.com/in/weeraphati/ */

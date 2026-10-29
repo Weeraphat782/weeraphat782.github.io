@@ -1,34 +1,44 @@
 import { aboutCopy } from '../content';
 
+const blocks = [
+  { label: 'Target direction', body: aboutCopy.positioning },
+  { label: 'How I build', body: aboutCopy.development },
+  { label: 'What I do not claim', body: aboutCopy.notClaiming },
+  {
+    label: 'Roles this work speaks to',
+    body: null,
+    roles: [
+      'Forward Deployed Engineer',
+      'AI Solutions / Applied AI Engineer',
+      'AI Automation / Implementation Engineer',
+      'Technical product and AI systems roles close to operations',
+    ],
+  },
+] as const;
+
 export function AboutPage() {
   return (
-    <div className="container page balance-page">
+    <div className="container page editorial-page">
       <header className="page-header">
         <h1>About</h1>
         <p className="lead">{aboutCopy.intro}</p>
       </header>
-      <div className="balance-grid">
-        <section>
-          <h2>Target direction</h2>
-          <p>{aboutCopy.positioning}</p>
-        </section>
-        <section>
-          <h2>How I build</h2>
-          <p>{aboutCopy.development}</p>
-        </section>
-        <section>
-          <h2>What I do not claim</h2>
-          <p>{aboutCopy.notClaiming}</p>
-        </section>
-        <section>
-          <h2>Roles this work speaks to</h2>
-          <ul>
-            <li>Forward Deployed Engineer</li>
-            <li>AI Solutions / Applied AI Engineer</li>
-            <li>AI Automation / Implementation Engineer</li>
-            <li>Technical product and AI systems roles close to operations</li>
-          </ul>
-        </section>
+      <div className="editorial-rows">
+        {blocks.map((block) => (
+          <section key={block.label} className="editorial-row">
+            <h2 className="section-label editorial-label">{block.label}</h2>
+            <div className="editorial-body">
+              {block.body ? <p>{block.body}</p> : null}
+              {'roles' in block && block.roles ? (
+                <ul>
+                  {block.roles.map((role) => (
+                    <li key={role}>{role}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   );

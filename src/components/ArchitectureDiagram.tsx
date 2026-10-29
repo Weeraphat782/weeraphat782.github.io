@@ -4,6 +4,7 @@ export function ArchitectureDiagram() {
 
   return (
     <figure className="arch-figure">
+      <div className="arch-scroll">
       <svg
         className="arch-svg"
         viewBox="0 0 920 320"
@@ -43,6 +44,8 @@ export function ArchitectureDiagram() {
         <LegendItem x={20} y={230} label="Verified in cargo app code" tone="verified" />
         <LegendItem x={20} y={252} label="Scheduled checks" tone="external" />
       </svg>
+      </div>
+      <p className="arch-scroll-hint">Scroll to see the full diagram</p>
       <figcaption id={descId}>
         Flow: operational triggers and separately configured schedules feed assistant workflows. Assistants
         call MCP tools against the system of record and documents. Results pass validation and human review
