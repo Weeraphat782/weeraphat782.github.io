@@ -1,3 +1,5 @@
+import type { IconName } from './components/Icon';
+
 export const site = {
   name: 'Weeraphat Issaraphon',
   title: 'AI Systems Builder',
@@ -11,48 +13,24 @@ export const site = {
   supporting:
     'I design and implement AI-powered operational systems that connect business processes, internal data, documents, and automation—with human oversight at critical decision points.',
   cargoPublicUrl: 'https://cargo.omgexp.com',
-  portrait: '/case-study/portrait-headshot.jpg',
-  siteUrl: 'https://weeraphat782.github.io',
-  headlineLead: 'Building AI Systems That Turn',
-  headlineEmphasis: 'Complex Operations',
-  headlineTail: 'Into Executable Workflows.',
-} as const;
-
-export const implementationStack = [
-  'MCP',
-  'Next.js',
-  'Supabase',
-  'Vercel',
-  'Webhooks',
-  'Cursor',
-] as const;
-
-/** Counts from the cargo case study — no invented business metrics */
-export const caseStudyProof = {
-  componentCount: 8,
-  webhookEvents: ['quotation.created', 'quotation.docs_uploaded', 'quotation.docs_replaced'] as const,
-  mcpToolExample: {
-    name: 'get_quotation',
-    input: '{ quotation_id: string }',
-    output: '{ status, documents[], customer_name, … }',
-  },
+  portrait: '/case-study/S__17186943.jpg',
 } as const;
 
 /** Public facts from https://www.linkedin.com/in/weeraphati/ */
 export const linkedinProfile = {
   fullName: 'Weeraphat Issaraphon',
-  headline: 'Project Coordinator at ServiceMind',
+  headline: 'Project Coordinator (ERP) at ServiceMind',
   location: 'Din Daeng, Bangkok',
   summary:
-    'Since August 2023 I have coordinated Cantrak at ServiceMind: turning a facility’s needs into requirements, training users, testing the product, and writing the manual people actually use.',
+    'Since August 2023 I have coordinated Cantrak at ServiceMind Asia: field visits to 20+ cannabis facilities, aligning the traceability app with how each farm actually works, training users, testing, and supporting trade-show booths.',
   focus: [
-    'Shape user requirements to how a facility operates.',
-    'Train new users and help them when something breaks.',
-    'Test with the team, find bugs, and report the cause to DevOps.',
-    'Write the system manual for the people running the product.',
+    'Visit farms across Chiang Mai, Nakhon Ratchasima, Chonburi, and Greater Bangkok to map real workflows before changing the system.',
+    'Consult with users so Cantrak matches facility operations—not a generic ERP template.',
+    'Lead training, manual testing, and clear bug reports to DevOps.',
+    'Represent the product at industry booths alongside sales and support.',
   ],
   education:
-    'B.A. International Business, First Class Honors (3.62), Srinakharinwirot University, 2018–2022.',
+    'Bachelor of Business Administration (International Business), GPA 3.60, Srinakharinwirot University, 2018–2022.',
 } as const;
 
 export type NavItem = { href: string; label: string };
@@ -61,7 +39,6 @@ export const nav: NavItem[] = [
   { href: '/', label: 'Home' },
   { href: '/projects', label: 'Projects' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export const featuredProject = {
@@ -70,14 +47,87 @@ export const featuredProject = {
   tagline:
     'Operational system of record, MCP tool access, event-driven workflows, and human-in-the-loop controls for international export and cargo logistics.',
   context:
-    'Built around the company’s own quotations, documents, booking links, and internal processes—not generic chat assumptions.',
+    'Built around the company’s own quotations, documents, booking links, and internal processes—supporting roughly 15–30 export shipments a month, with a Grok chatbot on MCP for shipment lookup and email-based tracking, and clean handoffs to Accounting.',
+  thumb: '/case-study/image.png',
 } as const;
+
+export const cantrakProject = {
+  slug: 'cantrak',
+  name: 'Cantrak',
+  logo: '/case-study/Cantrak_logo_png.png',
+  kicker: 'ERP · Cannabis traceability · Field implementation',
+  tagline:
+    'Traceability application for cannabis production—tracking and reviewing data across the grow cycle so facilities can meet industry standards.',
+  employer: 'ServiceMind Asia Co., Ltd.',
+  role: 'Project Coordinator (ERP)',
+  period: 'Aug 2023 – 2026',
+} as const;
+
+export type CantrakPhoto = { src: string; alt: string; caption: string };
+
+// ponytail: one photo per section; more shots live in public/case-study/cantrak/ (02, 05, 06, 08, 09) if a gallery comes back.
+export const cantrakPhotos: Record<'cover' | 'field' | 'role' | 'booth', CantrakPhoto> = {
+  cover: {
+    src: '/case-study/cantrak/cantrak-01.jpg',
+    alt: 'Cannabis plants on rolling benches under a greenhouse roof',
+    caption: 'Greenhouse visit: trellis, grow lights, and rolling benches used in daily production.',
+  },
+  field: {
+    src: '/case-study/cantrak/cantrak-03.jpg',
+    alt: 'Multi-tier indoor racks with vegetative cannabis plants',
+    caption: 'Multi-tier veg room: training users where scanning and batch steps fit in the workflow.',
+  },
+  role: {
+    src: '/case-study/cantrak/cantrak-04.jpg',
+    alt: 'Drying room with labeled blue rack rows',
+    caption: 'Post-harvest area with labeled rack zones—where traceability has to match physical layout.',
+  },
+  booth: {
+    src: '/case-study/cantrak/cantrak-10.jpg',
+    alt: 'Asia International Hemp Expo & Forum 2023 banner at QSNCC, Bangkok',
+    caption: 'Asia International Hemp Expo & Forum 2023 at QSNCC, where we ran the Cantrak booth.',
+  },
+};
+
+export const cantrakSections = {
+  overview: `Cantrak is a traceability application for cannabis production. It helps facilities record and review data across the production process so they can work toward compliance with industry standards—not a generic spreadsheet on the side.
+
+My work was implementation and adoption: understand how each facility operates, configure and explain the system, test what breaks, and stay with users until the workflow sticks.`,
+  fieldWork: `**20+ farms · 4 regions**
+
+I visited more than twenty facilities—around Chiang Mai, Nakhon Ratchasima (Korat), Chonburi, and Greater Bangkok—to watch how teams actually grow, track, and hand off data. Each site ran slightly differently; the goal was to implement Cantrak so daily work stayed natural and the record stayed trustworthy.`,
+  myRole: `- Consulted with users to align system functions with facility needs (resume: up to 15 farms in early rollout; field work grew to 20+ sites over time).
+- Led training for new users and stayed available when something did not match the floor process.
+- Ran manual testing, documented bugs with enough context for DevOps to reproduce and fix.
+- Supported product booths at industry events—demos, questions, and follow-up with facilities.`,
+  booths: `Trade-show booths were part of the same job: explain what Cantrak does, show the flow, and connect interested facilities with the team.`,
+} as const;
+
+export const otherProjects: { title: string; body: string; icon: IconName }[] = [
+  {
+    title: 'AI social media management platform',
+    body: 'Autonomous AI agents plan campaigns, draft content, generate images, and schedule posts for social channels.',
+    icon: 'external',
+  },
+  {
+    title: 'Gulf Document Distribution prototype',
+    body: 'Document-distribution web prototype built as part of my company role—validating how staff share and track files.',
+    icon: 'file-text',
+  },
+  {
+    title: 'Thailand Remote Work (Amazing Thailand)',
+    body: 'AI-powered Discord bot integrated with AWS Agent to support digital nomads exploring remote work in Thailand.',
+    icon: 'plane',
+  },
+];
 
 export type { CaseStudyScreenshot } from './case-study-screenshots';
 export { caseStudyScreenshots } from './case-study-screenshots';
 
 export const caseStudySections = {
   overview: `The AI-Native Cargo Operations Platform connects day-to-day export and air-cargo work to a single operational record: quotations, document types, uploads, booking share links, opportunity stages, and AWB tracking. AI assistants reach that record through explicit MCP tools and signed webhooks instead of guessing from chat history.
+
+The TMS layer supports on the order of **15–30 export shipments per month**, with customer self-service quotes, document uploads, and shipment tracking. A **Grok chatbot on MCP** helps staff pull shipment information and email-based tracking without retyping OMG numbers. Export documentation is organized so Accounting gets accurate handovers.
 
 This case study describes a system in active operational use. It does not claim perfect automation, guaranteed uptime, or autonomous agents.`,
   howItStarts: `A job starts in the customer portal, not in a chat window.
@@ -173,9 +223,56 @@ Implementation used AI coding tools (including Cursor) alongside Supabase, Verce
   verifiedNote: `This case study follows the cargo application in production: MCP tools, quotation webhooks, booking drafts a person sends, AWB updates, the delivered-customer email, and public booking pages.`,
 } as const;
 
+export const aboutTimeline = [
+  {
+    logo: '/logos/omg.png',
+    role: 'Export Sales Assistant',
+    org: 'OMG Experience',
+    sub: 'Export and air-cargo operations',
+    period: '2026 – Present',
+  },
+  {
+    logo: '/case-study/Cantrak_logo_png.png',
+    role: 'Project Coordinator (ERP)',
+    org: 'Cantrak · ServiceMind Asia',
+    sub: 'ServiceMind Asia Co., Ltd.',
+    period: 'Aug 2023 – 2026',
+  },
+  {
+    logo: '/logos/swu.png',
+    role: 'BBA International Business',
+    org: 'Srinakharinwirot University',
+    sub: 'GPA 3.60',
+    period: '2018 – 2022',
+  },
+] as const;
+
+export const aboutToolChips = [
+  { name: 'Cursor', logo: '/logos/tools/cursor.svg' },
+  { name: 'Claude', logo: '/logos/tools/claude.svg' },
+  { name: 'n8n', logo: '/logos/tools/n8n.svg' },
+  { name: 'MCP', logo: '/logos/tools/modelcontextprotocol.svg' },
+  { name: 'LINE OA', logo: '/logos/tools/line.svg' },
+  { name: 'Grok', logo: '/logos/tools/x.svg' },
+  { name: 'AWS', logo: '/logos/tools/amazonwebservices.svg' },
+] as const;
+
+export const aboutIdentity = {
+  tagline: 'AI systems builder for export and cargo operations.',
+  points: [
+    'Heading toward Forward Deployed and applied AI roles.',
+    'Build fast with AI tools, then check it against real operations.',
+    'Systems integrator, not a backend veteran or prompt-only user.',
+  ],
+} as const;
+
+export const aboutRoleChips = [
+  'Forward Deployed Engineer',
+  'Applied AI Engineer',
+  'AI Automation Engineer',
+] as const;
+
 export const aboutCopy = {
-  intro: `I am a business–technology generalist working in export and cargo operations. I translate messy operational reality into workflows, data models, and AI integrations that staff can actually use.`,
-  positioning: `I am positioning toward Forward Deployed Engineering and applied AI roles: close to stakeholders, accountable for outcomes, honest about what is automated versus assisted.`,
-  development: `I use modern AI-assisted development (including Cursor) to move quickly, but I validate behavior against production constraints—idempotency, human approval gates, and clear system-of-record boundaries.`,
-  notClaiming: `I am not presenting myself as a decade-long backend specialist or as someone who only prompts chatbots. The work is operational systems integration with code, tools, and process design.`,
+  skillsHard: ['Manual QA', 'Test design', 'User training'],
+  languages: 'Thai (native) · English',
 } as const;

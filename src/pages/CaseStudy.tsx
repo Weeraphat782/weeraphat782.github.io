@@ -1,31 +1,25 @@
-import { Fragment, useEffect, useRef, type ReactNode } from 'react';
 import { ArchitectureDiagram } from '../components/ArchitectureDiagram';
 import { ProseText } from '../components/ProseText';
 import { SystemScreensGallery } from '../components/SystemScreensGallery';
 import {
-  caseStudyProof,
   caseStudyScreenshots,
   caseStudySections,
   featuredProject,
   site,
 } from '../content';
 import { Link } from '../router';
-import { usePageMeta } from '../usePageMeta';
+import type { ReactNode } from 'react';
 
-function firstSentence(text: string): string {
-  const line = text.trim().split('\n').find((l) => l.trim()) ?? text;
-  const match = line.match(/^[^.!?]+[.!?]/);
-  return match ? match[0].trim() : line.trim();
-}
+type CaseSection = { id: string; name: string; body: ReactNode };
 
-const sections: { id: string; title: string; body: ReactNode }[] = [
-  { id: 'overview', title: 'Overview', body: <ProseText text={caseStudySections.overview} /> },
-  { id: 'problem', title: 'Business Problem', body: <ProseText text={caseStudySections.businessProblem} /> },
-  { id: 'before', title: 'Before: Manual Operational Workflow', body: <ProseText text={caseStudySections.before} /> },
-  { id: 'after', title: 'After: AI-Assisted Workflow', body: <ProseText text={caseStudySections.after} /> },
+const sectionDefs: CaseSection[] = [
+  { id: 'overview', name: 'Overview', body: <ProseText text={caseStudySections.overview} /> },
+  { id: 'problem', name: 'Business Problem', body: <ProseText text={caseStudySections.businessProblem} /> },
+  { id: 'before', name: 'Before: Manual Operational Workflow', body: <ProseText text={caseStudySections.before} /> },
+  { id: 'after', name: 'After: AI-Assisted Workflow', body: <ProseText text={caseStudySections.after} /> },
   {
     id: 'architecture',
-    title: 'System Architecture',
+    name: 'System Architecture',
     body: (
       <>
         <ProseText text={caseStudySections.architecture} />
@@ -35,170 +29,106 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
   },
   {
     id: 'components',
-    title: 'Key Technical Components',
+    name: 'Key Technical Components',
     body: (
-      <>
-        <aside className="tool-contract" aria-label="Example MCP tool contract">
-          <p className="tool-contract-label">Example MCP tool</p>
-          <code>
-            {caseStudyProof.mcpToolExample.name}({caseStudyProof.mcpToolExample.input}) →{' '}
-            {caseStudyProof.mcpToolExample.output}
-          </code>
-        </aside>
-        <ul className="component-list">
-          {caseStudySections.keyComponents.map((c) => (
-            <li key={c.title}>
-              <details className="component-details">
-                <summary>
-                  <h3>{c.title}</h3>
-                </summary>
-                <p>{c.body}</p>
-              </details>
-            </li>
-          ))}
-        </ul>
-      </>
+      <ul className="component-list">
+        {caseStudySections.keyComponents.map((c) => (
+          <li key={c.title}>
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+          </li>
+        ))}
+      </ul>
     ),
   },
-  { id: 'human', title: 'Human-in-the-Loop Design', body: <ProseText text={caseStudySections.humanInLoop} /> },
-  { id: 'examples', title: 'Real Operational Examples', body: <ProseText text={caseStudySections.examples} /> },
-  { id: 'impact', title: 'Business Impact', body: <ProseText text={caseStudySections.businessImpact} /> },
-  { id: 'challenges', title: 'Challenges and Trade-offs', body: <ProseText text={caseStudySections.challenges} /> },
-  { id: 'role', title: 'My Role and Contributions', body: <ProseText text={caseStudySections.role} /> },
-  { id: 'next', title: 'What I Would Improve Next', body: <ProseText text={caseStudySections.nextSteps} /> },
+  { id: 'human', name: 'Human-in-the-Loop Design', body: <ProseText text={caseStudySections.humanInLoop} /> },
+  { id: 'examples', name: 'Real Operational Examples', body: <ProseText text={caseStudySections.examples} /> },
+  { id: 'impact', name: 'Business Impact', body: <ProseText text={caseStudySections.businessImpact} /> },
+  { id: 'challenges', name: 'Challenges and Trade-offs', body: <ProseText text={caseStudySections.challenges} /> },
+  { id: 'role', name: 'My Role and Contributions', body: <ProseText text={caseStudySections.role} /> },
+  { id: 'next', name: 'What I Would Improve Next', body: <ProseText text={caseStudySections.nextSteps} /> },
 ];
 
 const showSystemScreens = caseStudyScreenshots.length > 0;
-const teaserShot = caseStudyScreenshots[0];
+
+function orderedSections(): CaseSection[] {
+  const insideSystem: CaseSection = {
+    id: 'inside-system',
+    name: 'Inside the system',
+    body: (
+      <>
+        <ProseText text={caseStudySections.howItStarts} />
+        <SystemScreensGallery />
+      </>
+    ),
+  };
+
+  const out: CaseSection[] = [];
+  for (const s of sectionDefs) {
+    out.push(s);
+    if (s.id === 'overview' && showSystemScreens) {
+      out.push(insideSystem);
+    }
+  }
+  return out;
+}
 
 export function CaseStudyPage() {
-  const tocDetailsRef = useRef<HTMLDetailsElement>(null);
-
-  usePageMeta(
-    `${featuredProject.name} · ${site.name}`,
-    featuredProject.tagline,
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 960px)');
-    const sync = () => {
-      if (tocDetailsRef.current) tocDetailsRef.current.open = mq.matches;
-    };
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 641px)');
-    const sync = () => {
-      document.querySelectorAll<HTMLDetailsElement>('.component-details').forEach((el) => {
-        el.open = mq.matches;
-      });
-    };
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
-  const tocEntries = sections.flatMap((s) => {
-    if (s.id === 'overview' && showSystemScreens) {
-      return [s, { id: 'inside-system', title: 'Inside the system' }];
-    }
-    return [s];
-  });
-
-  const glance = {
-    problem: firstSentence(caseStudySections.businessProblem),
-    built: firstSentence(caseStudySections.after),
-    result: firstSentence(caseStudySections.businessImpact),
-  };
+  const sections = orderedSections();
+  const tocSections = sections.filter((s) => s.id !== 'next');
 
   return (
     <article className="container page case-study">
-      <a href="#case-toc" className="toc-jump">
-        Contents
-      </a>
       <div className="case-layout">
-        <div className="case-intro">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/projects">Projects</Link>
-            <span aria-hidden="true"> / </span>
-            <span>{featuredProject.name}</span>
-          </nav>
-          <header className="page-header">
-            <p className="eyebrow">Case study</p>
-            <h1>{featuredProject.name}</h1>
-            <p className="lead">{featuredProject.context}</p>
-            <p className="muted">
-              Public system reference:{' '}
-              <a href={site.cargoPublicUrl} target="_blank" rel="noopener noreferrer">
-                {site.cargoPublicUrl}
-              </a>{' '}
-              (login required; this portfolio does not connect to production).
-            </p>
-          </header>
+      <div className="case-intro">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/projects">Projects</Link>
+        <span aria-hidden="true"> / </span>
+        <span>{featuredProject.slug}</span>
+      </nav>
+      <header className="page-header">
+        <p className="eyebrow">Case study</p>
+        <h1>{featuredProject.name}</h1>
+        <p className="lead">{featuredProject.context}</p>
+        <p className="muted">
+          Public system reference:{' '}
+          <a href={site.cargoPublicUrl} target="_blank" rel="noopener noreferrer">
+            {site.cargoPublicUrl}
+          </a>{' '}
+          (login required; this portfolio does not connect to production).
+        </p>
+      </header>
 
-          <div className="at-a-glance" aria-label="At a glance">
-            <div>
-              <h2 className="glance-label">Problem</h2>
-              <p>{glance.problem}</p>
-            </div>
-            <div>
-              <h2 className="glance-label">What I built</h2>
-              <p>{glance.built}</p>
-            </div>
-            <div>
-              <h2 className="glance-label">Result</h2>
-              <p>{glance.result}</p>
-            </div>
-          </div>
+      <aside className="verified-callout" role="note">
+        <h2>What is verified</h2>
+        <p>{caseStudySections.verifiedNote}</p>
+      </aside>
+      </div>
 
-          {teaserShot ? (
-            <a href="#inside-system" className="case-teaser-shot">
-              <img src={teaserShot.src} alt={teaserShot.caption} loading="lazy" />
-              <span>See the full workflow in screenshots →</span>
-            </a>
-          ) : null}
+      <nav className="toc" aria-label="Case study sections">
+        <h2 className="toc-title">On this page</h2>
+        <ol>
+          {tocSections.map((s) => {
+            const num = sections.findIndex((x) => x.id === s.id) + 1;
+            return (
+              <li key={s.id} value={num}>
+                <a href={`#${s.id}`}>{s.name}</a>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
 
-          <aside className="verified-callout" role="note">
-            <h2>What is verified</h2>
-            <p>{caseStudySections.verifiedNote}</p>
-          </aside>
-        </div>
-
-        <nav className="toc" id="case-toc" aria-label="Case study sections">
-          <details className="toc-details" ref={tocDetailsRef}>
-            <summary className="toc-title">On this page</summary>
-            <ol>
-              {tocEntries.map((s) => (
-                <li key={s.id}>
-                  <a href={`#${s.id}`}>{s.title}</a>
-                </li>
-              ))}
-            </ol>
-          </details>
-        </nav>
-
-        <div className="case-main">
-          {sections.map((s) => (
-            <Fragment key={s.id}>
-              <section className="case-section">
-                <h2 id={s.id}>{s.title}</h2>
-                <div className="prose">{s.body}</div>
-              </section>
-              {s.id === 'overview' && showSystemScreens ? (
-                <section className="case-section">
-                  <h2 id="inside-system">Inside the system</h2>
-                  <div className="prose">
-                    <ProseText text={caseStudySections.howItStarts} />
-                    <SystemScreensGallery />
-                  </div>
-                </section>
-              ) : null}
-            </Fragment>
-          ))}
-        </div>
+      <div className="case-main">
+      {sections.map((s, index) => (
+        <section key={s.id} className="case-section">
+          <h2 id={s.id}>
+            {index + 1}. {s.name}
+          </h2>
+          <div className="prose">{s.body}</div>
+        </section>
+      ))}
+      </div>
       </div>
     </article>
   );

@@ -1,7 +1,7 @@
 import { Layout } from './components/Layout';
 import { AboutPage } from './pages/About';
+import { CantrakPage } from './pages/Cantrak';
 import { CaseStudyPage } from './pages/CaseStudy';
-import { ContactPage } from './pages/Contact';
 import { HomePage } from './pages/Home';
 import { ProjectsPage } from './pages/Projects';
 import { Link, RouterProvider, useRouter } from './router';
@@ -16,10 +16,11 @@ function AppRoutes() {
       return <ProjectsPage />;
     case '/projects/ai-native-cargo-operations':
       return <CaseStudyPage />;
+    case '/projects/cantrak':
+      return <CantrakPage />;
     case '/about':
-      return <AboutPage />;
     case '/contact':
-      return <ContactPage />;
+      return <AboutPage />;
     default:
       return (
         <div className="container page">

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { Link } from '../router';
 import { nav, site } from '../content';
+import { Link } from '../router';
+import { ContactRow } from './ContactRow';
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -14,11 +15,15 @@ export function Layout({ children }: { children: ReactNode }) {
             <Link href="/" className="brand">
               <span className="brand-name">{site.name}</span>
             </Link>
-            <p className="brand-meta brand-meta-contact">
-              <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
-              <span>{site.location}</span>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-            </p>
+            <div className="brand-meta">
+              <ContactRow icon="phone" href={`tel:${site.phone}`}>
+                {site.phoneDisplay}
+              </ContactRow>
+              <ContactRow icon="map-pin">{site.location}</ContactRow>
+              <ContactRow icon="mail" href={`mailto:${site.email}`}>
+                {site.email}
+              </ContactRow>
+            </div>
           </div>
           <nav className="site-nav" aria-label="Primary">
             <ul>

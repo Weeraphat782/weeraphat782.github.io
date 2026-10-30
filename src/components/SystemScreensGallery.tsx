@@ -1,50 +1,63 @@
-import { useEffect, useRef, useState } from 'react';
 import {
   caseStudyScreenshotGroups,
   caseStudyScreenshots,
 } from '../case-study-screenshots';
+import { Icon } from './Icon';
+import { LightboxProvider, useLightbox, type LightboxShot } from './Lightbox';
 
-type OpenShot = { src: string; alt: string; caption: string };
+export type GalleryScreenshot = {
+  src: string;
+  alt: string;
+  caption: string;
+  group?: string;
+};
 
-/** Renders registered screenshots by group. Returns null when the list is empty. */
-export function SystemScreensGallery() {
-  const [open, setOpen] = useState<OpenShot | null>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null);
+type SystemScreensGalleryProps = {
+  items?: GalleryScreenshot[];
+  groups?: readonly string[];
+  note?: string;
+  layout?: 'stack' | 'grid';
+};
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
+export function SystemScreensGalleryContent({
+  items,
+  groups,
+  note,
+  layout = 'stack',
+}: Required<Pick<SystemScreensGalleryProps, 'items' | 'groups'>> &
+  Pick<SystemScreensGalleryProps, 'note' | 'layout'>) {
+  const { open } = useLightbox();
 
-  if (caseStudyScreenshots.length === 0) return null;
+  if (items.length === 0) return null;
+
+  const listClass = layout === 'grid' ? 'system-screens-list system-screens-list--grid' : 'system-screens-list';
 
   return (
     <>
-      <p className="system-screens-note">
-        Screens from the cargo system. Captions describe the step, not the record on screen.
-      </p>
-      {caseStudyScreenshotGroups.map((group) => {
-        const items = caseStudyScreenshots.filter((s) => s.group === group);
-        if (items.length === 0) return null;
+      {note ? <p className="system-screens-note">{note}</p> : null}
+      {groups.map((group) => {
+        const groupItems = items.filter((s) => (s.group ?? group) === group);
+        if (groupItems.length === 0) return null;
         return (
           <section key={group} className="system-screens-group" aria-labelledby={`screens-${group.replace(/\s+/g, '-')}`}>
             <h3 className="system-screens-group-title" id={`screens-${group.replace(/\s+/g, '-')}`}>
               {group}
             </h3>
-            <ul className="system-screens-list">
-              {items.map((item) => (
+            <ul className={listClass}>
+              {groupItems.map((item) => (
                 <li key={item.src}>
-                  <figure className="system-screens-figure">
+                  <figure className={`system-screens-figure ${layout === 'grid' ? 'system-screens-figure--grid' : ''}`.trim()}>
                     <button
                       type="button"
                       className="system-screens-zoom"
                       aria-label={`Enlarge: ${item.caption}`}
-                      onClick={() => setOpen(item)}
+                      onClick={() => open(item as LightboxShot)}
                     >
                       <img src={item.src} alt="" loading="lazy" decoding="async" />
-                      <span className="system-screens-zoom-label">Enlarge</span>
+                      <span className="system-screens-zoom-label">
+                        <Icon name="zoom" size={14} />
+                        Enlarge
+                      </span>
                     </button>
                     <figcaption>{item.caption}</figcaption>
                   </figure>
@@ -54,24 +67,22 @@ export function SystemScreensGallery() {
           </section>
         );
       })}
-      <dialog
-        ref={dialogRef}
-        className="screen-lightbox"
-        onClose={() => setOpen(null)}
-        onClick={(event) => {
-          if (event.target === dialogRef.current) dialogRef.current?.close();
-        }}
-      >
-        {open ? (
-          <figure>
-            <button type="button" className="screen-lightbox-close" onClick={() => dialogRef.current?.close()}>
-              Close
-            </button>
-            <img src={open.src} alt={open.alt} />
-            <figcaption>{open.caption}</figcaption>
-          </figure>
-        ) : null}
-      </dialog>
     </>
+  );
+}
+
+/** Renders screenshots by group with lightbox. Returns null when the list is empty. */
+export function SystemScreensGallery({
+  items = caseStudyScreenshots,
+  groups = caseStudyScreenshotGroups,
+  note = 'Screens from the cargo system. Captions describe the step, not the record on screen.',
+  layout = 'stack',
+}: SystemScreensGalleryProps) {
+  if (items.length === 0) return null;
+
+  return (
+    <LightboxProvider>
+      <SystemScreensGalleryContent items={items} groups={groups} note={note} layout={layout} />
+    </LightboxProvider>
   );
 }
