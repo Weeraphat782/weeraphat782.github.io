@@ -13,7 +13,8 @@ export type IconName =
   | 'database'
   | 'user-check'
   | 'file-text'
-  | 'briefcase';
+  | 'briefcase'
+  | 'chevron-up';
 
 const paths: Record<IconName, ReactNode> = {
   phone: (
@@ -101,6 +102,7 @@ const paths: Record<IconName, ReactNode> = {
       <rect width="20" height="14" x="2" y="6" rx="2" />
     </>
   ),
+  'chevron-up': <path d="m18 15-6-6-6 6" />,
 };
 
 type IconProps = {

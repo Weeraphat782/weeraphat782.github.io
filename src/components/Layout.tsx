@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { nav, site } from '../content';
 import { Link } from '../router';
 import { ContactRow } from './ContactRow';
+import { ScrollToTop } from './ScrollToTop';
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -39,6 +40,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <main id="main" className="site-main">
         {children}
       </main>
+      <ScrollToTop />
     </div>
   );
 }
